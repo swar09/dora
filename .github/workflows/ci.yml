@@ -488,8 +488,6 @@ jobs:
 
       - name: "Test CLI (Python): Async Example"
         timeout-minutes: 30
-        ## TODO: Fix async Windows support
-        if: runner.os != 'Windows'
         env:
           RUST_LOG: debug
         run: dora run examples/python-async/dataflow.yaml --uv --stop-after 5m

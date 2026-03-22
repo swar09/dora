@@ -48,9 +48,27 @@ fn create_dataflow(
     fs::write(&dataflow_yml_path, dataflow_yml)
         .with_context(|| format!("failed to write `{}`", dataflow_yml_path.display()))?;
 
-    create_custom_node("talker_1".into(), Some(root.join("talker_1")), TALKER, false, false)?;
-    create_custom_node("talker_2".into(), Some(root.join("talker_2")), TALKER, false, false)?;
-    create_custom_node("listener_1".into(), Some(root.join("listener_1")), LISTENER, false, false)?;
+    create_custom_node(
+        "talker_1".into(),
+        Some(root.join("talker_1")),
+        TALKER,
+        false,
+        false,
+    )?;
+    create_custom_node(
+        "talker_2".into(),
+        Some(root.join("talker_2")),
+        TALKER,
+        false,
+        false,
+    )?;
+    create_custom_node(
+        "listener_1".into(),
+        Some(root.join("listener_1")),
+        LISTENER,
+        false,
+        false,
+    )?;
     create_cmakefile(root.to_path_buf(), use_path_deps)?;
 
     println!(

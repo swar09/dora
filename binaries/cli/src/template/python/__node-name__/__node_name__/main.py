@@ -1,11 +1,21 @@
-"""TODO: Add docstring."""
+"""Main entry point for a dora-rs Python node.
+
+This script demonstrates a basic dora-rs node implementation that listens
+for events and optionally sends outputs back to the dataflow.
+"""
 
 import pyarrow as pa
 from dora import Node
 
 
 def main():
-    """TODO: Add docstring."""
+    """
+    Initialize and run the dora-rs node event loop.
+    
+    Creates a Node, iterates over events from the runtime, prints details for INPUT events with id "TICK",
+    and sends an output for INPUT events with id "my_input_id" (output_id "my_output_id").
+    Expects INPUT events to include the keys "type", "id", "value", and "metadata".
+    """
     node = Node()
 
     for event in node:

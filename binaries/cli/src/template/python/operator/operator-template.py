@@ -1,4 +1,7 @@
-"""TODO: Add docstring."""
+"""Python operator template for dora-rs.
+
+Provides a skeleton for implementing custom dataflow operators in Python.
+"""
 
 from dora import DoraStatus
 
@@ -14,25 +17,17 @@ class Operator:
         dora_event,
         send_output,
     ) -> DoraStatus:
-        """TODO :Description.
-
-        Parameters
-        ----------
-        dora_event : dict
-            Event containing an `id`, `data`, and `metadata`.
-        send_output : Callable[[str, bytes | pa.Array, Optional[dict]], None]
-            Function for sending output to the dataflow. The first argument is the `output_id`, the second
-            argument is the data (either as bytes or a pa.Array), and the third argument is the dora metadata
-            dictionary. For example:
-                send_output("bbox", pa.array([100], type=pa.uint8()), dora_event["metadata"]).
-
-        Returns
-        -------
-            DoraStatus:
-                CONTINUE means that the operator will
-                    keep listening for further inputs.
-                STOP means that the operator stop listening for inputs.
-
+        """
+        Handle a dora-rs event and optionally emit outputs via the provided callback.
+        
+        Parameters:
+            dora_event (dict): Event from dora-rs expected to include keys such as
+                "type" (e.g., "INPUT"), "id", "value", and "metadata".
+            send_output (Callable): Callback to emit outputs. Called with
+                (output_id: str, value: bytes or pa.Array, metadata: dict|None).
+        
+        Returns:
+            DoraStatus: `CONTINUE` to keep the operator running or `STOP` to terminate it.
         """
         if dora_event["type"] == "INPUT":
             print(

@@ -1,4 +1,9 @@
-"""TODO: Add docstring."""
+"""Microphone operator for dora-rs dataflow.
+
+This operator captures audio from the system's microphone using the
+'sounddevice' library and emits the recorded audio data as a float32
+array to the "audio" output.
+"""
 
 import numpy as np
 import pyarrow as pa
@@ -18,7 +23,16 @@ class Operator:
         dora_event,
         send_output,
     ) -> DoraStatus:
-        """TODO: Add docstring."""
+        """
+        Handle Dora events: on an "INPUT" event, record microphone audio and emit it as a float32 PyArrow array on the "audio" output.
+        
+        Parameters:
+            dora_event (dict): Event object from dora-rs; when `dora_event["type"] == "INPUT"` the operator records audio and uses `dora_event["metadata"]` as the emitted metadata.
+            send_output (Callable[[str, Any, dict], None]): Callback to emit outputs; called as `send_output("audio", pa.array(audio_data), metadata)`.
+        
+        Returns:
+            DoraStatus: DoraStatus.CONTINUE to keep the operator active.
+        """
         if dora_event["type"] == "INPUT":
             audio_data = sd.rec(
                 int(SAMPLE_RATE * MAX_DURATION),

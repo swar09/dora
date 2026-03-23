@@ -1,4 +1,9 @@
-"""TODO: Add docstring."""
+"""Webcam operator for dora-rs dataflow.
+
+This operator captures video frames from a local webcam using OpenCV and
+emits them as raw image buffers to the "image" output. It includes basic
+error handling for cases where the camera is unavailable.
+"""
 
 import os
 import time
@@ -20,7 +25,11 @@ class Operator:
     """Sending image from webcam to the dataflow."""
 
     def __init__(self):
-        """TODO: Add docstring."""
+        """
+        Create and configure the webcam capture for this operator.
+        
+        Initializes an OpenCV VideoCapture for the configured camera index, sets the capture resolution to the module's CAMERA_WIDTH and CAMERA_HEIGHT, records the operator start time, and initializes the consecutive read failure counter.
+        """
         self.video_capture = cv2.VideoCapture(CAMERA_INDEX)
         self.start_time = time.time()
         self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH)
@@ -32,7 +41,16 @@ class Operator:
         dora_event: str,
         send_output,
     ) -> DoraStatus:
-        """TODO: Add docstring."""
+        """
+        Handle an incoming Dora event by capturing a webcam frame (or a fallback image) and emitting it on the "image" output.
+        
+        Parameters:
+            dora_event (dict): Dora-RS event object; expected to contain a "type" key ("INPUT", "STOP", etc.) and a "metadata" field used when emitting output.
+            send_output (Callable): Callback used to emit output with signature send_output(channel: str, data, metadata).
+        
+        Returns:
+            DoraStatus: `CONTINUE` to keep the operator running, `STOP` to request shutdown.
+        """
         event_type = dora_event["type"]
         if event_type == "INPUT":
             ret, frame = self.video_capture.read()
@@ -71,5 +89,9 @@ class Operator:
         return DoraStatus.STOP
 
     def __del__(self):
-        """TODO: Add docstring."""
+        """
+        Release the webcam capture device when the operator is destroyed.
+        
+        This frees the underlying OpenCV VideoCapture resource so the camera can be reused by other processes.
+        """
         self.video_capture.release()

@@ -1,4 +1,10 @@
-"""TODO: Add docstring."""
+"""Receiver node for the queue size and timeout test in dora-rs.
+
+This script validates that messages are received within an acceptable
+latency (less than 1 second) under specific queue and timeout
+configurations. It calculates and prints the difference between the
+sent and received timestamps for each message.
+"""
 
 import time
 
@@ -6,7 +12,15 @@ from dora import Node
 
 
 def main() -> None:
-    """TODO: Add docstring."""
+    """
+    Receive messages from a Dora node and assert message latency is under 1 second.
+    
+    Processes incoming messages from a Node until a message with type "STOP" is received.
+    Ignores messages whose type is not "INPUT". For each "INPUT" message, reads the
+    sent timestamp and message index, computes the received timestamp, prints a line
+    with [counter, index], sent time, received time, and their difference, asserts the
+    difference is less than 1.0 second, and sleeps 0.1 seconds before continuing.
+    """
     dora_node = Node()
 
     i = 0

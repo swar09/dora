@@ -1,9 +1,17 @@
 import asyncio
+import sys
 
 from dora import Node
 
 
+async def dummy_ticker():
+    while True:
+        await asyncio.sleep(0.01)
+
 async def main():
+    if sys.platform == "win32":
+        asyncio.create_task(dummy_ticker())
+
     node = Node()
     for _ in range(50):
         event = await node.recv_async()
@@ -14,6 +22,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(main())
+    asyncio.run(main())
